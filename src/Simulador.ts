@@ -1,4 +1,3 @@
-// src/Simulador.ts
 import { Proceso, EstadoProceso } from './Proceso';
 import { Memoria } from './Memoria';
 import { Planificador } from './Planificador';
@@ -40,17 +39,27 @@ export class Simulador {
             }
         }
 
-        // 2. Despacho y ejecución
+        // 2. Actualización de bloqueados [RF08]
+        for (const p of this._procesos) {
+            if (p.estado === EstadoProceso.Bloqueado) {
+                p.reducirBloqueo();
+                if (p.tiempoBloqueoRestante === 0) {
+                    this._planificador.agregarProceso(p);
+                }
+            }
+        }
+
+        // 3. Despacho y ejecución
         this._planificador.ejecutarTick();
 
-        // 3. Liberación de memoria
+        // 4. Liberación de memoria
         for (const p of this._procesos) {
             if (p.estado === EstadoProceso.Terminado) {
                 this._memoria.liberar(p);
             }
         }
 
-        // 4. Actualización del reloj y métricas
+        // 5. Actualización del reloj y métricas
         this._tickActual++;
         if (this._planificador.procesoEnCpu) {
             this._ticksCpuOcupada++;

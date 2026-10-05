@@ -1,4 +1,3 @@
-// src/Planificador.ts
 import { Proceso, EstadoProceso } from './Proceso';
 
 export class Planificador {
@@ -31,7 +30,10 @@ export class Planificador {
             this._procesoEnCpu.ejecutarUnTick();
             this._quantumRestanteActual--;
 
-            if (this._procesoEnCpu.cpuRestante === 0) {
+            if (this._procesoEnCpu.estado === EstadoProceso.Bloqueado) {
+                this._procesoEnCpu = null;
+                this._cambiosDeContexto++;
+            } else if (this._procesoEnCpu.cpuRestante === 0) {
                 this._procesoEnCpu.setEstado(EstadoProceso.Terminado);
                 this._procesoEnCpu = null;
             } else if (this._quantumRestanteActual === 0) {

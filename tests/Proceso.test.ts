@@ -1,4 +1,4 @@
-// tests/Proceso.test.ts
+
 import { describe, it, expect } from 'vitest';
 import { Proceso, EstadoProceso } from '../src/Proceso';
 
@@ -10,3 +10,10 @@ describe('Entidad Proceso [RF02, RF03]', () => {
         expect(p.cpuRestante).toBe(5);
         expect(p.estado).toBe(EstadoProceso.Nuevo);
     });
+
+    it('debe rechazar configuraciones con enteros inválidos', () => {
+        expect(() => new Proceso(-1, 200, 5)).toThrowError();
+        expect(() => new Proceso(2, 0, 5)).toThrowError();
+        expect(() => new Proceso(3, 200, -2)).toThrowError();
+    });
+});

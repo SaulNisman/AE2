@@ -35,4 +35,12 @@ export class Proceso {
     setEstado(nuevoEstado: EstadoProceso): void {
         this._estado = nuevoEstado;
     }
+    ejecutarUnTick(): void {
+        if (this._cpuRestante > 0) {
+            this._cpuRestante--;
+        }
+    }
 }
+
+
+ 

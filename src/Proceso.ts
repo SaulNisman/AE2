@@ -21,6 +21,9 @@ export class Proceso {
     private _eventoEsTick: number = -1;
 
     constructor(pid: number, memoriaRequerida: number, tiempoTotalCpu: number) {
+        if (pid <= 0 || memoriaRequerida <= 0 || tiempoTotalCpu <= 0) {
+            throw new Error("El PID, la memoria y el tiempo de CPU deben ser enteros positivos.");
+        }
         this._pid = pid;
         this._memoriaRequerida = memoriaRequerida;
         this._tiempoTotalCpu = tiempoTotalCpu;
